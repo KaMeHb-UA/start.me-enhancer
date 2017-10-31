@@ -1,4 +1,23 @@
 (function(){
-    alert('Hello from ' + window.location);
-    if(confirm('Go to GitHub repository?')) window.location = 'https://github.com/KaMeHb-UA/start.me-enhancer';
+    var backupObjects = {},
+        defTurn = false;
+    
+    backupObjects.console = console;
+    backupObjects._console = new Proxy({}, {
+        get(){
+          return ()=>{};
+        },
+        set(){
+          return true;
+        }
+    });
+    window.turnConsole = (on = defTurn)=>{
+        defTurn = !defTurn;
+        if(on){
+            console = backupObjects.console
+        } else {
+            console = backupObjects._console
+        }
+    }
+    turnConsole();
 })()
